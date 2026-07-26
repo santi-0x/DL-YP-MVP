@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(980px 520px at -10% -20%, rgba(255, 150, 96, 0.45), transparent 58%),
+    radial-gradient(820px 480px at 110% -10%, rgba(255, 214, 120, 0.55), transparent 52%),
+    radial-gradient(760px 520px at 80% 120%, rgba(120, 214, 196, 0.35), transparent 55%),
+    #fff4ea;
+  color: #1c140e;
+  font-family: Outfit, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 360;
+}
+
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7), transparent 28%),
+    radial-gradient(circle at 80% 0%, rgba(255, 186, 140, 0.35), transparent 26%);
+  animation: wash 18s ease-in-out infinite alternate;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+input:not([type="checkbox"]), select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #f0d7c4;
+  color: #1c140e;
+  border-radius: 12px;
+  padding: 0.7rem 0.8rem;
+  width: 100%;
+}
+
+input:focus, select:focus, button:focus-visible, a:focus-visible {
+  outline: 2px solid #0e7c68;
+  outline-offset: 2px;
+}
+
+main .rounded-2xl,
+main .rounded-3xl {
+  box-shadow: 0 18px 44px -32px rgba(160, 80, 30, 0.45);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th {
+  text-align: left;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d7360;
+  font-weight: 480;
+  padding: 0.7rem 0.6rem;
+  border-bottom: 1px solid #f0d7c4;
+}
+
+td {
+  padding: 0.85rem 0.6rem;
+  border-bottom: 1px solid #f6e6d8;
+  vertical-align: middle;
+}
+
+.paper {
+  background: #fff1df;
+  color: #1c140e;
+}
+
+.paper input, .paper select {
+  background: transparent;
+  color: #1c140e;
+  border-color: rgba(28, 20, 14, 0.16);
+}
+
+.ticker {
+  animation: ticker 32s linear infinite;
+}
+
+.orb {
+  animation: drift 16s ease-in-out infinite;
+}
+
+.orb-late {
+  animation: drift 20s ease-in-out infinite reverse;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6%, -8%, 0) scale(1.08); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes wash {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, 3%, 0); }
+}
