@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  role          Role           @default(USER)
+  disabled      Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  supplies      Supply[]
+  borrows       Borrow[]
+  events        LedgerEvent[]
+  notifications Notification[]
+}
+
+model Market {
+  id                       String   @id
+  symbol                   String   @unique
+  name                     String
+  coingeckoId              String
+  coinbasePair             String
+  seedPriceUsd             String
+  isCollateral             Boolean
+  ltvBps                   Int
+  liquidationThresholdBps  Int
+  liquidationBonusBps      Int
+  reserveFactorBps         Int
+  closeFactorBps           Int
+  baseAprWad               String
+  slope1AprWad             String
+  slope2AprWad             String
+  optimalUtilWad           String
+  treasuryScaledWad        String
+  seededBorrowScaledWad    String
+  liquidityIndexRay        String
+  borrowIndexRay           String
+  lastAccrual              DateTime
+  paused                   Boolean  @default(false)
+  lastNotifiedBorrowAprWad String?
+  realizedLossWad          String   @default("0")
+  uncoveredWad             String   @default("0")
+  supplies                 Supply[]
+  borrows                  Borrow[]
+}
+
+model Supply {
+  id         String  @id @default(cuid())
+  userId     String
+  marketId   String
+  scaledWad  String
+  collateral Boolean @default(true)
+  user       User    @relation(fields: [userId], references: [id])
+  market     Market  @relation(fields: [marketId], references: [id])
+
+  @@unique([userId, marketId])
+}
+
+model Borrow {
+  id        String @id @default(cuid())
+  userId    String
+  marketId  String
+  scaledWad String
+  user      User   @relation(fields: [userId], references: [id])
+  market    Market @relation(fields: [marketId], references: [id])
+
+  @@unique([userId, marketId])
+}
+
+model LedgerEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  marketId  String?
+  kind      String
+  symbol    String?
+  amountWad String?
+  meta      Json?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  kind      String
+  title     String
+  body      String
+  dedupeKey String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+}
+
+model PriceSnapshot {
+  id        String   @id @default(cuid())
+  symbol    String
+  priceWad  String
+  source    String
+  createdAt DateTime @default(now())
+
+  @@index([symbol, createdAt])
+}
