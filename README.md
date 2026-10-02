@@ -1,4 +1,4 @@
-# Fathom — Web2 lending desk
+# DL&YP — Web2 lending desk
 
 Simulated overcollateralized lending. The home page and the sign-in page use the official Paramount trailer for *The Big Short* as the background. That film is about collateral and a credit book the market mispriced. The Web2 desk is complete. The Web3 contracts are not deployed. Markets, positions, borrow terms, stress shocks, alerts, and an ops console all run against this API. There is no wallet, no chain, and no live liquidation keeper.
 
